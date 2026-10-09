@@ -137,22 +137,14 @@
 
   /* ---------- 繪製 ---------- */
   function render() {
-    const from = applyFilter();
-    renderTiles(from);
+    applyFilter();
+    renderTiles();
     renderList();
   }
 
-  function renderTiles(from) {
-    const rows = state.filtered;
-    const n = rows.length;
-    const withBetter = rows.filter((r) => r.better.trim()).length;
-    const spanDays = Math.max(1, Math.round((startOfDay(new Date()) - from) / DAY) + 1);
-
-    $("#kTotal").textContent = n;
+  function renderTiles() {
+    $("#kTotal").textContent = state.filtered.length;
     $("#kTotalSub").textContent = state.days ? `近 ${state.days} 天` : `累計至今`;
-    $("#kBetter").textContent = n ? `${Math.round((withBetter / n) * 100)}%` : "–";
-    $("#kBetterSub").textContent = `${withBetter} 則有寫建議`;
-    $("#kWeekly").textContent = n ? (n / (spanDays / 7)).toFixed(1) : "0";
     const latest = state.rows[0];
     $("#kLatest").textContent = latest ? relTime(latest.date) : "–";
     $("#kLatestSub").textContent = latest ? fmtFull(latest.date) : "還沒有回饋";
