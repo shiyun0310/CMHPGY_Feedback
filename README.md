@@ -18,7 +18,7 @@
 | `index.html` | 頁面 |
 | `style.css` | 樣式 |
 | `script.js` | 互動與送出 |
-| `dashboard.html` / `dashboard.css` / `dashboard.js` | 教學部儀表板 DDDDDDashboarddd |
+| `DDDDDDashboarddd/` | 教學部儀表板 DDDDDDashboarddd |
 | `config.js` | 設定接收網址 `ENDPOINT` |
 | `google-apps-script/Code.gs` | 貼到 Google Apps Script 的接收程式 |
 
@@ -47,10 +47,10 @@ window.FEEDBACK_CONFIG = {
 
 ### 3. 儀表板（DDDDDDashboarddd）
 
-開啟 `dashboard.html`（例如 `https://<帳號>.github.io/CMHPGY_Feedback/dashboard.html`）即可查看，不需要密碼。
+開啟 `/DDDDDDashboarddd/`（例如 `https://<帳號>.github.io/CMHPGY_Feedback/DDDDDDashboarddd/`，大小寫要一致）即可查看，不需要密碼。
 
 儀表板功能：時間範圍（近 7 / 30 / 90 天、全部）、關鍵字搜尋、回饋數與附建議比例、回饋列表、匯出 CSV。
-想先看看樣子，可開 `dashboard.html?demo` 顯示假資料。
+想先看看樣子，可開 `/DDDDDDashboarddd/?demo` 顯示假資料。
 
 > 若是更新過 `Code.gs`，要到 **部署 → 管理部署作業 → ✏️ 編輯 → 版本選「新版本」→ 部署**，網址不會變。
 >
