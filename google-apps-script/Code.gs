@@ -10,10 +10,19 @@ const HEADERS = [
 ];
 
 function doPost(e) {
+  let data;
+  try {
+    data = JSON.parse(e.postData.contents);
+  } catch (err) {
+    return json_({ ok: false, error: "bad request" });
+  }
+
+  // 儀表板讀取回饋（需要密碼）
+  if (data.action === "list") return list_(data.key);
+
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const data = JSON.parse(e.postData.contents);
     const sheet = getSheet_();
     const row = HEADERS.map(([key]) =>
       key === "timestamp" ? new Date() : safe_(data[key])
@@ -25,6 +34,27 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * 回傳所有回饋給 DDDDDDashboarddd。
+ * 密碼存在「專案設定 → 指令碼屬性」的 DASHBOARD_KEY；沒設定時一律拒絕。
+ */
+function list_(key) {
+  const expected = PropertiesService.getScriptProperties().getProperty("DASHBOARD_KEY");
+  if (!expected || String(key || "") !== expected) {
+    Utilities.sleep(800); // 放慢亂猜密碼
+    return json_({ ok: false, error: "unauthorized" });
+  }
+  const values = getSheet_().getDataRange().getValues().slice(1);
+  const rows = values
+    .filter((r) => r[0] !== "")
+    .map((r) => ({
+      timestamp: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
+      say: String(r[1] || ""),
+      better: String(r[2] || ""),
+    }));
+  return json_({ ok: true, rows });
 }
 
 function doGet() {
