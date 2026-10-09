@@ -5,17 +5,8 @@
 const SHEET_NAME = "回饋";
 const HEADERS = [
   ["timestamp", "時間"],
-  ["anonymous", "匿名"],
-  ["name", "名字"],
-  ["contact", "聯絡方式"],
-  ["year", "年級"],
-  ["rotation", "輪訓科別"],
-  ["category", "類別"],
-  ["mood", "心情"],
-  ["urgency", "緊急程度"],
-  ["title", "標題"],
-  ["content", "內容"],
-  ["wish", "願望"],
+  ["say", "我想說說"],
+  ["better", "我覺得更好的方式"],
 ];
 
 function doPost(e) {
