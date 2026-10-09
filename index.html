@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>YY你說，我來聽 💬</title>
   <meta name="description" content="PGY 問題回饋小站：有什麼想說的，都可以告訴我們！" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
@@ -40,7 +40,7 @@
 
     <!-- 表單 -->
     <form class="card" id="feedbackForm" novalidate>
-      <p class="anon-note">🙈 全程匿名，不會記錄你是誰，放心說～</p>
+      <p class="anon-note">🙈 全程匿名，<span class="nowrap">不會記錄你是誰，</span><span class="nowrap">放心說～</span></p>
 
       <div class="step">
         <h2><span class="num">1</span>我想說說 💭</h2>
@@ -57,7 +57,7 @@
         <label class="field">
           <span class="sr-only">我覺得更好的方式</span>
           <textarea name="better" id="better" rows="5" maxlength="2000"
-            placeholder="如果可以改變，你希望怎麼做會更好？（沒想法也沒關係，可以空白）"></textarea>
+            placeholder="如果可以改變，你希望怎麼做會更好？"></textarea>
           <small class="counter"><span id="countBetter">0</span> / 2000</small>
         </label>
       </div>
