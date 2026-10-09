@@ -142,6 +142,31 @@ body {
 .mascot.happy .mouth::before, .mascot.happy .mouth::after { height: 9px; background: #ff9fb8; }
 .mascot.wiggle { animation: wiggle .5s ease; }
 
+.poke-hint {
+  position: absolute;
+  right: 100%; bottom: 18px;
+  margin-right: 10px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--pink-deep);
+  background: #fff;
+  border: 2px dashed var(--pink);
+  border-radius: 999px;
+  padding: 4px 10px;
+  transform: rotate(-6deg);
+  animation: nudge 1.6s ease-in-out infinite;
+}
+.poke-hint::after { content: " 👉"; }
+@keyframes nudge {
+  0%, 100% { transform: rotate(-6deg) translateX(0); }
+  50% { transform: rotate(-6deg) translateX(5px); }
+}
+@keyframes nudge-left {
+  0%, 100% { transform: rotate(6deg) translateX(0); }
+  50% { transform: rotate(6deg) translateX(-5px); }
+}
+
 .speech {
   position: absolute;
   left: 100%; top: -18px;
@@ -375,6 +400,15 @@ textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
   .mascot { margin-top: 112px; }
   .speech { left: 50%; top: -100px; margin-left: 0; transform: translateX(-50%); }
   .speech::after { left: 50%; bottom: -10px; transform: translateX(-50%) rotate(-45deg); }
+  .poke-hint {
+    right: auto; left: 100%;
+    margin-right: 0; margin-left: 4px;
+    font-size: 12px; padding: 3px 7px;
+    transform: rotate(6deg);
+    animation-name: nudge-left;
+  }
+  .poke-hint::after { content: none; }
+  .poke-hint::before { content: "👈 "; }
   .anon-note { font-size: 14px; padding: 10px 12px; }
   .step h2 { font-size: 18px; }
   .step + .step { margin-top: 20px; padding-top: 18px; }
@@ -384,6 +418,7 @@ textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
 
 /* 小手機（≤ 360px） */
 @media (max-width: 360px) {
+  .poke-hint { white-space: normal; width: max-content; max-width: 72px; text-align: center; line-height: 1.35; border-radius: 14px; }
   .title { letter-spacing: 1px; }
   .title .yy { padding: 0 10px; border-radius: 16px; }
   .anon-note { font-size: 13px; }
