@@ -49,7 +49,7 @@ window.FEEDBACK_CONFIG = {
 
 開啟 `/DDDDDDashboarddd/`（例如 `https://<帳號>.github.io/CMHPGY_Feedback/DDDDDDashboarddd/`，大小寫要一致）即可查看，不需要密碼。
 
-儀表板功能：時間範圍（近 7 / 30 / 90 天、全部）、關鍵字搜尋、回饋數與附建議比例、回饋列表、匯出 CSV。
+儀表板功能：時間範圍（近 7 / 30 / 90 天、全部）、關鍵字搜尋、回饋數、最近一則、回饋列表、匯出 CSV。
 想先看看樣子，可開 `/DDDDDDashboarddd/?demo` 顯示假資料。
 
 > 若是更新過 `Code.gs`，要到 **部署 → 管理部署作業 → ✏️ 編輯 → 版本選「新版本」→ 部署**，網址不會變。
