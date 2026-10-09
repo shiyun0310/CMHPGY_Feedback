@@ -1,38 +1,21 @@
 (() => {
   const ENDPOINT = (window.FEEDBACK_CONFIG && window.FEEDBACK_CONFIG.ENDPOINT) || "";
   const DEMO = new URLSearchParams(location.search).has("demo");
-  const KEY_STORE = "dddddd-key";
   const PAGE = 20;
   const DAY = 86400000;
 
   const $ = (sel) => document.querySelector(sel);
-  const login = $("#login");
-  const loginForm = $("#loginForm");
-  const keyInput = $("#key");
-  const loginBtn = $("#loginBtn");
-  const loginError = $("#loginError");
+  const status = $("#status");
+  const retryBtn = $("#retryBtn");
   const board = $("#board");
   const topActions = $("#topActions");
-  const chartEl = $("#chart");
-  const tip = $("#tip");
   const listEl = $("#list");
   const moreBtn = $("#moreBtn");
 
   const state = { rows: [], days: 30, q: "", shown: PAGE, filtered: [] };
 
   /* ---------- 小工具 ---------- */
-  const storage = {
-    get: () => { try { return sessionStorage.getItem(KEY_STORE) || ""; } catch (_) { return ""; } },
-    set: (v) => { try { sessionStorage.setItem(KEY_STORE, v); } catch (_) {} },
-    clear: () => { try { sessionStorage.removeItem(KEY_STORE); } catch (_) {} },
-  };
-
   const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const startOfWeek = (d) => {
-    const s = startOfDay(d);
-    s.setDate(s.getDate() - ((s.getDay() + 6) % 7)); // 週一開始
-    return s;
-  };
   const pad = (n) => String(n).padStart(2, "0");
   const fmtMD = (d) => `${d.getMonth() + 1}/${d.getDate()}`;
   const fmtFull = (d) =>
@@ -46,19 +29,15 @@
   };
 
   /* ---------- 讀取資料 ---------- */
-  async function fetchRows(key) {
+  async function fetchRows() {
     if (DEMO || !ENDPOINT) return demoRows();
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: "list", key }),
+      body: JSON.stringify({ action: "list" }),
     });
     const data = await res.json();
-    if (!data.ok) {
-      const err = new Error(data.error || "error");
-      err.code = data.error;
-      throw err;
-    }
+    if (!data.ok) throw new Error(data.error || "error");
     return data.rows;
   }
 
@@ -69,58 +48,45 @@
       .sort((a, b) => b.date - a.date);
   }
 
-  async function load(key, { silent } = {}) {
+  async function load({ silent } = {}) {
     if (silent) board.classList.add("loading");
-    const rows = await fetchRows(key);
+    const rows = await fetchRows();
     state.rows = normalize(rows);
     board.classList.remove("loading");
     render();
   }
 
-  /* ---------- 登入 ---------- */
+  /* ---------- 顯示 ---------- */
   function showBoard() {
-    login.hidden = true;
+    status.hidden = true;
     board.hidden = false;
     topActions.hidden = false;
     $("#demoNote").hidden = !(DEMO || !ENDPOINT);
-    render(); // 顯示後再畫一次，圖表才量得到正確寬度
   }
 
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const key = keyInput.value.trim();
-    if (!key) return;
-    loginError.hidden = true;
-    loginBtn.disabled = true;
-    loginBtn.textContent = "確認中…";
+  async function start() {
+    status.hidden = false;
+    status.classList.remove("failed");
+    $("#statusTitle").textContent = "資料讀取中…";
+    $("#statusMsg").textContent = "兔子正在努力搬資料，請稍等一下 🥕";
+    retryBtn.hidden = true;
     try {
-      await load(key);
-      storage.set(key);
+      await load();
       showBoard();
-    } catch (err) {
-      loginError.textContent =
-        err.code === "unauthorized" ? "密碼不對喔，再試一次 🙈" : "讀取失敗，請確認網路或 Apps Script 設定 😢";
-      loginError.hidden = false;
-    } finally {
-      loginBtn.disabled = false;
-      loginBtn.textContent = "進入 ✨";
+    } catch (_) {
+      status.classList.add("failed");
+      $("#statusTitle").textContent = "讀取失敗了 😢";
+      $("#statusMsg").textContent = "請確認網路，或 Apps Script 是否已重新部署。";
+      retryBtn.hidden = false;
     }
-  });
+  }
 
-  $("#logoutBtn").addEventListener("click", () => {
-    storage.clear();
-    state.rows = [];
-    board.hidden = true;
-    topActions.hidden = true;
-    login.hidden = false;
-    keyInput.value = "";
-    keyInput.focus();
-  });
+  retryBtn.addEventListener("click", start);
 
   $("#refreshBtn").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
     btn.disabled = true;
-    try { await load(storage.get(), { silent: true }); }
+    try { await load({ silent: true }); }
     catch (_) { board.classList.remove("loading"); alert("重新整理失敗，請稍後再試"); }
     finally { btn.disabled = false; }
   });
@@ -173,7 +139,6 @@
   function render() {
     const from = applyFilter();
     renderTiles(from);
-    renderChart(from);
     renderList();
   }
 
@@ -191,124 +156,6 @@
     const latest = state.rows[0];
     $("#kLatest").textContent = latest ? relTime(latest.date) : "–";
     $("#kLatestSub").textContent = latest ? fmtFull(latest.date) : "還沒有回饋";
-  }
-
-  function buckets(from) {
-    const weekly = !state.days || state.days > 30;
-    const today = startOfDay(new Date());
-    const out = [];
-    let cur = weekly ? startOfWeek(from) : new Date(from);
-    while (cur <= today) {
-      const next = new Date(cur);
-      next.setDate(next.getDate() + (weekly ? 7 : 1));
-      out.push({ start: new Date(cur), end: next, count: 0 });
-      cur = next;
-    }
-    for (const r of state.filtered) {
-      const b = out.find((x) => r.date >= x.start && r.date < x.end);
-      if (b) b.count++;
-    }
-    return { weekly, out };
-  }
-
-  const SVG = "http://www.w3.org/2000/svg";
-  const el = (tag, attrs = {}) => {
-    const n = document.createElementNS(SVG, tag);
-    for (const k in attrs) n.setAttribute(k, attrs[k]);
-    return n;
-  };
-
-  function niceMax(v) {
-    if (v <= 4) return Math.max(1, v);
-    const step = Math.pow(10, Math.floor(Math.log10(v)));
-    for (const m of [1, 2, 2.5, 5, 10]) if (m * step >= v) return m * step;
-    return v;
-  }
-
-  function renderChart(from) {
-    const { weekly, out } = buckets(from);
-    $("#chartTitle").textContent = weekly ? "每週回饋數" : "每日回饋數";
-    chartEl.textContent = "";
-    tip.hidden = true;
-
-    const W = Math.max(280, chartEl.clientWidth || 600);
-    const H = W < 500 ? 200 : 240;
-    const m = { top: 22, right: 8, bottom: 28, left: 30 };
-    const iw = W - m.left - m.right;
-    const ih = H - m.top - m.bottom;
-    const max = niceMax(Math.max(0, ...out.map((b) => b.count)));
-    const ticks = max <= 4 ? max : 4;
-
-    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": $("#chartTitle").textContent });
-
-    for (let i = 0; i <= ticks; i++) {
-      const v = (max / ticks) * i;
-      const y = m.top + ih - (v / max) * ih;
-      svg.appendChild(el("line", { class: "grid-line", x1: m.left, x2: W - m.right, y1: y, y2: y }));
-      const t = el("text", { class: "axis-label", x: m.left - 8, y: y + 4, "text-anchor": "end" });
-      t.textContent = Number.isInteger(v) ? v : v.toFixed(1);
-      svg.appendChild(t);
-    }
-
-    const slot = iw / out.length;
-    const gap = Math.max(2, Math.min(slot * 0.3, 12));
-    const bw = Math.max(2, slot - gap);
-    const labelEvery = Math.ceil(out.length / Math.max(1, Math.floor(iw / 48)));
-    const peak = out.reduce((a, b) => (b.count > a.count ? b : a), out[0]);
-
-    out.forEach((b, i) => {
-      const x = m.left + i * slot + gap / 2;
-      const h = (b.count / max) * ih;
-      const y = m.top + ih - h;
-      const label = weekly ? `${fmtMD(b.start)} 那週` : fmtMD(b.start);
-
-      const hit = el("rect", { class: "hit", x: m.left + i * slot, y: m.top, width: slot, height: ih, tabindex: 0 });
-      hit.setAttribute("aria-label", `${label}：${b.count} 則`);
-      svg.appendChild(hit);
-
-      if (b.count > 0) {
-        const r = Math.min(4, bw / 2, h);
-        const d = `M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + bw - r} Q${x + bw},${y} ${x + bw},${y + r} V${y + h} Z`;
-        svg.appendChild(el("path", { class: "bar", d }));
-      } else {
-        svg.appendChild(el("g", { class: "bar" }));
-      }
-
-      if (b === peak && b.count > 0) {
-        const t = el("text", { class: "value-label", x: x + bw / 2, y: y - 6, "text-anchor": "middle" });
-        t.textContent = b.count;
-        svg.appendChild(t);
-      }
-
-      if (i % labelEvery === 0) {
-        const t = el("text", { class: "axis-label", x: x + bw / 2, y: H - 8, "text-anchor": "middle" });
-        t.textContent = fmtMD(b.start);
-        svg.appendChild(t);
-      }
-
-      const show = () => {
-        tip.textContent = "";
-        const s = document.createElement("strong");
-        s.textContent = `${b.count} 則`;
-        const sp = document.createElement("span");
-        sp.textContent = label;
-        tip.append(s, sp);
-        tip.hidden = false;
-        const box = chartEl.getBoundingClientRect();
-        const card = chartEl.parentElement.getBoundingClientRect();
-        const scale = box.width / W;
-        tip.style.left = `${box.left - card.left + (x + bw / 2) * scale}px`;
-        tip.style.top = `${box.top - card.top + Math.min(y, m.top + ih) * scale - 8}px`;
-      };
-      const hide = () => { tip.hidden = true; };
-      hit.addEventListener("pointerenter", show);
-      hit.addEventListener("focus", show);
-      hit.addEventListener("pointerleave", hide);
-      hit.addEventListener("blur", hide);
-    });
-
-    svg.appendChild(el("line", { class: "grid-line", x1: m.left, x2: W - m.right, y1: m.top + ih, y2: m.top + ih, style: "stroke:#d9c4cf" }));
-    chartEl.appendChild(svg);
   }
 
   // 安全地把關鍵字標亮（不使用 innerHTML）
@@ -375,12 +222,6 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { if (!board.hidden) renderChart(rangeStart()); }, 120);
-  });
-
   /* ---------- 示範資料 ---------- */
   function demoRows() {
     const says = [
@@ -415,17 +256,5 @@
   }
 
   /* ---------- 啟動 ---------- */
-  (async () => {
-    const saved = storage.get();
-    if (DEMO || saved) {
-      try {
-        await load(saved);
-        showBoard();
-        return;
-      } catch (_) {
-        storage.clear();
-      }
-    }
-    keyInput.focus();
-  })();
+  start();
 })();

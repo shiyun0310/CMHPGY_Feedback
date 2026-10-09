@@ -88,7 +88,7 @@ body {
 .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
 .btn:disabled { filter: grayscale(.4); cursor: wait; }
 .btn.ghost { background: #fff; color: var(--ink); }
-.btn:focus-visible, .seg button:focus-visible, input:focus-visible { outline: 3px dashed var(--pink); outline-offset: 2px; }
+.btn:focus-visible, .seg button:focus-visible, .search input:focus-visible { outline: 3px dashed var(--pink); outline-offset: 2px; }
 
 .error {
   margin: 14px 0 0; padding: 10px 14px;
@@ -96,18 +96,11 @@ body {
   font-weight: 700; color: #b52a55;
 }
 
-/* ---------- 登入 ---------- */
-.login { max-width: 420px; margin: 40px auto; text-align: center; }
-.login-icon { font-size: 56px; }
-.login p { color: var(--muted); }
-.login form { display: flex; gap: 10px; margin-top: 18px; }
-.login input {
-  flex: 1; min-width: 0;
-  font: inherit; font-size: 16px; color: var(--ink);
-  background: #fffafc; border: 2.5px solid var(--line); border-radius: 999px;
-  padding: 10px 16px; outline: none;
-}
-.login input:focus { border-color: var(--pink); }
+/* ---------- 讀取狀態 ---------- */
+.status { max-width: 420px; margin: 40px auto; text-align: center; }
+.status-icon { font-size: 56px; display: inline-block; animation: hop 1.2s ease-in-out infinite; }
+.status.failed .status-icon { animation: none; }
+.status p { color: var(--muted); line-height: 1.7; }
 
 .demo-note {
   margin: 0 0 16px; padding: 10px 14px;
@@ -142,7 +135,7 @@ body {
   font: inherit; font-size: 16px; color: var(--ink); padding: 10px 0;
 }
 
-#board.loading .tiles, #board.loading .chart, #board.loading .list { opacity: .5; transition: opacity .2s; }
+#board.loading .tiles, #board.loading .list { opacity: .5; transition: opacity .2s; }
 
 /* ---------- 數字卡 ---------- */
 .tiles {
@@ -157,28 +150,6 @@ body {
 .tile-label { font-size: 14px; font-weight: 700; color: var(--muted); }
 .tile strong { font-size: 32px; font-weight: 900; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .tile small { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* ---------- 圖表 ---------- */
-.chart-card { position: relative; margin-bottom: 18px; }
-.chart { width: 100%; }
-.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
-.chart .grid-line { stroke: var(--grid); stroke-width: 1; }
-.chart .axis-label { fill: var(--muted); font-size: 12px; font-family: inherit; }
-.chart .bar { fill: var(--bar); transition: fill .15s; pointer-events: none; }
-.chart text { pointer-events: none; }
-.chart .hit { fill: transparent; cursor: default; outline: none; }
-.chart .hit:hover + .bar, .chart .hit:focus + .bar, .chart .bar.active { fill: var(--bar-hover); }
-.chart .hit:focus-visible { outline: none; }
-.chart .value-label { fill: var(--ink); font-size: 12px; font-weight: 700; font-family: inherit; }
-
-.tooltip {
-  position: absolute; pointer-events: none; z-index: 5;
-  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
-  padding: 6px 10px; box-shadow: 0 3px 0 var(--ink);
-  font-size: 13px; white-space: nowrap; transform: translate(-50%, -100%);
-}
-.tooltip strong { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
-.tooltip span { color: var(--muted); }
 
 /* ---------- 列表 ---------- */
 .list-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
@@ -213,7 +184,6 @@ body {
   .seg { justify-content: space-between; }
   .seg button { flex: 1; padding: 7px 6px; font-size: 13px; }
   .tile strong { font-size: 26px; }
-  .login form { flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {
