@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YY你說，我來聽 💬</title>
+  <meta name="description" content="PGY 問題回饋小站：有什麼想說的，都可以告訴我們！" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 背景漂浮小物 -->
+  <div class="floaties" aria-hidden="true">
+    <span>💬</span><span>🩺</span><span>☁️</span><span>💖</span><span>⭐</span>
+    <span>🍙</span><span>💊</span><span>🌈</span><span>🐣</span><span>✨</span>
+  </div>
+
+  <main class="wrap">
+    <!-- 標題區 -->
+    <header class="hero">
+      <div class="mascot" id="mascot" title="戳我一下～">
+        <div class="mascot-body">
+          <div class="eyes"><i></i><i></i></div>
+          <div class="blush"><i></i><i></i></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="mascot-ear left"></div>
+        <div class="mascot-ear right"></div>
+        <div class="speech" id="speech">嗨～今天還好嗎？</div>
+      </div>
+
+      <h1 class="title">
+        <span class="yy">YY</span>你說，<br class="br-mobile" />我來聽 <span class="bubble-emoji">💬</span>
+      </h1>
+      <p class="subtitle">PGY 的大小事都可以丟過來！<br />值班累了、教學卡卡、還是只是想抱怨一下，我們都在 🫶</p>
+
+      <ul class="promises">
+        <li>🙈 可以匿名</li>
+        <li>👀 每則都會看</li>
+        <li>🛠️ 認真想辦法</li>
+      </ul>
+    </header>
+
+    <!-- 表單 -->
+    <form class="card" id="feedbackForm" novalidate>
+      <div class="step">
+        <h2><span class="num">1</span>你是哪位小 PGY 呢？</h2>
+
+        <label class="toggle">
+          <input type="checkbox" id="anonymous" checked />
+          <span class="slider"></span>
+          <span class="toggle-text">我想匿名 🙈</span>
+        </label>
+
+        <div class="grid two" id="identityFields" hidden>
+          <label class="field">
+            <span>名字 / 暱稱</span>
+            <input type="text" name="name" maxlength="30" placeholder="例如：愛喝珍奶的小王" />
+          </label>
+          <label class="field">
+            <span>聯絡方式（想要回覆的話）</span>
+            <input type="text" name="contact" maxlength="60" placeholder="分機、Email 或 LINE ID" />
+          </label>
+        </div>
+
+        <div class="grid two">
+          <label class="field">
+            <span>年級</span>
+            <select name="year">
+              <option value="">— 不透露也可以 —</option>
+              <option>PGY1</option>
+              <option>PGY2</option>
+              <option>其他</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>目前在哪一科輪訓？</span>
+            <input type="text" name="rotation" maxlength="30" placeholder="例如：內科、急診、外科…" />
+          </label>
+        </div>
+      </div>
+
+      <div class="step">
+        <h2><span class="num">2</span>想聊聊哪一類的事？</h2>
+        <div class="chips" role="radiogroup" aria-label="問題類別">
+          <label class="chip"><input type="radio" name="category" value="教學訓練" /><span>📚 教學訓練</span></label>
+          <label class="chip"><input type="radio" name="category" value="值班排班" /><span>🌙 值班排班</span></label>
+          <label class="chip"><input type="radio" name="category" value="臨床工作" /><span>🩺 臨床工作</span></label>
+          <label class="chip"><input type="radio" name="category" value="行政流程" /><span>📋 行政流程</span></label>
+          <label class="chip"><input type="radio" name="category" value="環境設備" /><span>🛏️ 環境設備</span></label>
+          <label class="chip"><input type="radio" name="category" value="身心狀況" /><span>💗 身心狀況</span></label>
+          <label class="chip"><input type="radio" name="category" value="人際相處" /><span>🤝 人際相處</span></label>
+          <label class="chip"><input type="radio" name="category" value="其他" /><span>🍀 其他</span></label>
+        </div>
+      </div>
+
+      <div class="step">
+        <h2><span class="num">3</span>現在的心情是？</h2>
+        <div class="moods" role="radiogroup" aria-label="心情">
+          <label class="mood"><input type="radio" name="mood" value="還不錯" /><span class="face">😊</span><small>還不錯</small></label>
+          <label class="mood"><input type="radio" name="mood" value="有點煩" /><span class="face">😕</span><small>有點煩</small></label>
+          <label class="mood"><input type="radio" name="mood" value="好累" /><span class="face">😩</span><small>好累</small></label>
+          <label class="mood"><input type="radio" name="mood" value="生氣氣" /><span class="face">😤</span><small>生氣氣</small></label>
+          <label class="mood"><input type="radio" name="mood" value="想哭" /><span class="face">😭</span><small>想哭</small></label>
+        </div>
+
+        <div class="urgency">
+          <span>這件事有多急？</span>
+          <input type="range" name="urgency" id="urgency" min="1" max="3" step="1" value="1" />
+          <output id="urgencyLabel">🐢 慢慢來就好</output>
+        </div>
+      </div>
+
+      <div class="step">
+        <h2><span class="num">4</span>說吧，我在聽 👂</h2>
+        <label class="field">
+          <span>簡單一句話標題</span>
+          <input type="text" name="title" maxlength="50" placeholder="例如：值班室冷氣好像壞掉了 🥵" />
+        </label>
+        <label class="field">
+          <span>詳細說說看 <em class="req">*必填</em></span>
+          <textarea name="content" id="content" rows="6" maxlength="2000" required
+            placeholder="發生了什麼事？希望怎麼改善？想到什麼就寫什麼，不用太正式喔～"></textarea>
+          <small class="counter"><span id="count">0</span> / 2000</small>
+        </label>
+        <label class="field">
+          <span>如果可以許一個願望… ✨（選填）</span>
+          <input type="text" name="wish" maxlength="100" placeholder="你希望事情變成什麼樣子？" />
+        </label>
+      </div>
+
+      <p class="error" id="error" role="alert" hidden></p>
+
+      <button type="submit" class="send" id="sendBtn">
+        <span class="send-text">送出去 🚀</span>
+      </button>
+      <p class="tiny">按下送出後，訊息會直接傳給 PGY 負責團隊，不會公開喔 🔒</p>
+    </form>
+
+    <!-- 送出成功 -->
+    <section class="card done" id="done" hidden>
+      <div class="done-icon">💌</div>
+      <h2>收到啦！謝謝你願意說 🥹</h2>
+      <p id="doneMsg">我們會好好看、認真想辦法。<br />辛苦了，記得喝水、吃飯、偷偷休息一下！</p>
+      <button type="button" class="send ghost" id="againBtn">再說一件事 ✍️</button>
+    </section>
+
+    <footer class="foot">
+      <p>Made with 💖 for every PGY · 有緊急狀況請直接找導師或主責人員喔</p>
+    </footer>
+  </main>
+
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
