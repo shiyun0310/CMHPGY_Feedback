@@ -45,17 +45,16 @@ window.FEEDBACK_CONFIG = {
 
 > `ENDPOINT` 留空時是**示範模式**：回饋只存在該瀏覽器的 localStorage，不會真的送出。
 
-### 3. 設定儀表板密碼（DDDDDDashboarddd）
+### 3. 儀表板（DDDDDDashboarddd）
 
-1. 在 Apps Script 左側點 **⚙️ 專案設定 → 指令碼屬性 → 新增指令碼屬性**。
-2. 屬性填 `DASHBOARD_KEY`，值填一組只有教學部知道的密碼（建議 12 字以上）。
-3. 若是更新過 `Code.gs`，要到 **部署 → 管理部署作業 → ✏️ 編輯 → 版本選「新版本」→ 部署**，網址不會變。
-4. 開啟 `dashboard.html`（例如 `https://<帳號>.github.io/CMHPGY_Feedback/dashboard.html`），輸入密碼即可查看。
+開啟 `dashboard.html`（例如 `https://<帳號>.github.io/CMHPGY_Feedback/dashboard.html`）即可查看，不需要密碼。
 
-儀表板功能：時間範圍（近 7 / 30 / 90 天、全部）、關鍵字搜尋、回饋數與附建議比例、每日／每週趨勢圖、回饋列表、匯出 CSV。
+儀表板功能：時間範圍（近 7 / 30 / 90 天、全部）、關鍵字搜尋、回饋數與附建議比例、回饋列表、匯出 CSV。
 想先看看樣子，可開 `dashboard.html?demo` 顯示假資料。
 
-> 回饋網站上沒有連到儀表板的連結，網址請只給教學部同仁。密碼只存在瀏覽器分頁（關掉分頁就要重新輸入）。
+> 若是更新過 `Code.gs`，要到 **部署 → 管理部署作業 → ✏️ 編輯 → 版本選「新版本」→ 部署**，網址不會變。
+>
+> ⚠️ 儀表板沒有密碼：知道網址的人都看得到所有回饋內容。回饋網站上沒有連到儀表板的連結，網址請只給教學部同仁。
 
 ### 4. 用 GitHub Pages 上線
 
