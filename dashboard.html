@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>DDDDDDashboarddd</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <main class="dash">
+    <header class="top">
+      <h1 class="brand">
+        <span class="bunny" aria-hidden="true">🐰</span>
+        <span class="d">DDDDDD</span>ashboard<span class="d">dd</span>
+      </h1>
+      <div class="top-actions" id="topActions" hidden>
+        <button type="button" class="btn ghost" id="refreshBtn">🔄 重新整理</button>
+        <button type="button" class="btn ghost" id="exportBtn">⬇️ 匯出 CSV</button>
+        <button type="button" class="btn ghost" id="logoutBtn">🚪 登出</button>
+      </div>
+    </header>
+
+    <!-- 登入 -->
+    <section class="card login" id="login">
+      <div class="login-icon" aria-hidden="true">🔐</div>
+      <h2>教學部專用</h2>
+      <p>請輸入儀表板密碼，才能看到 PGY 的回饋喔</p>
+      <form id="loginForm">
+        <label class="sr-only" for="key">儀表板密碼</label>
+        <input type="password" id="key" autocomplete="current-password" placeholder="儀表板密碼" required />
+        <button type="submit" class="btn" id="loginBtn">進入 ✨</button>
+      </form>
+      <p class="error" id="loginError" role="alert" hidden></p>
+    </section>
+
+    <!-- 儀表板 -->
+    <section id="board" hidden>
+      <p class="demo-note" id="demoNote" hidden>🧪 示範資料：目前顯示的是假資料，正式資料需設定 Apps Script 網址與密碼。</p>
+
+      <div class="filters" role="group" aria-label="篩選">
+        <div class="seg" id="range" role="radiogroup" aria-label="時間範圍">
+          <button type="button" data-days="7">近 7 天</button>
+          <button type="button" data-days="30" class="on">近 30 天</button>
+          <button type="button" data-days="90">近 90 天</button>
+          <button type="button" data-days="0">全部</button>
+        </div>
+        <label class="search">
+          <span aria-hidden="true">🔍</span>
+          <span class="sr-only">搜尋回饋</span>
+          <input type="search" id="search" placeholder="搜尋關鍵字…" />
+        </label>
+      </div>
+
+      <div class="tiles" id="tiles">
+        <div class="tile"><span class="tile-label">回饋數</span><strong id="kTotal">–</strong><small id="kTotalSub"></small></div>
+        <div class="tile"><span class="tile-label">附改善建議</span><strong id="kBetter">–</strong><small id="kBetterSub"></small></div>
+        <div class="tile"><span class="tile-label">平均每週</span><strong id="kWeekly">–</strong><small>則</small></div>
+        <div class="tile"><span class="tile-label">最近一則</span><strong id="kLatest">–</strong><small id="kLatestSub"></small></div>
+      </div>
+
+      <section class="card chart-card">
+        <h2 id="chartTitle">每日回饋數</h2>
+        <div class="chart" id="chart"></div>
+        <div class="tooltip" id="tip" role="status" hidden></div>
+      </section>
+
+      <section class="card list-card">
+        <div class="list-head">
+          <h2>回饋列表</h2>
+          <span class="count" id="listCount"></span>
+        </div>
+        <ol class="list" id="list"></ol>
+        <p class="empty" id="empty" hidden>這段時間還沒有回饋喔 🍃</p>
+        <button type="button" class="btn ghost more" id="moreBtn" hidden>顯示更多</button>
+      </section>
+    </section>
+
+    <footer class="foot"><a href="./">← 回到「YY你說，我來聽 💬」</a></footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
