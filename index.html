@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YY你說，我來聽 💬</title>
+  <meta name="description" content="PGY 問題回饋小站：有什麼想說的，都可以告訴我們！" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 背景漂浮小物 -->
+  <div class="floaties" aria-hidden="true">
+    <span>💬</span><span>🩺</span><span>☁️</span><span>💖</span><span>⭐</span>
+    <span>🍙</span><span>💊</span><span>🌈</span><span>🐣</span><span>✨</span>
+  </div>
+
+  <main class="wrap">
+    <!-- 標題區 -->
+    <header class="hero">
+      <div class="mascot" id="mascot" title="戳我一下～">
+        <div class="mascot-body">
+          <div class="eyes"><i></i><i></i></div>
+          <div class="blush"><i></i><i></i></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="mascot-ear left"></div>
+        <div class="mascot-ear right"></div>
+        <div class="speech" id="speech">嗨～今天還好嗎？</div>
+      </div>
+
+      <h1 class="title">
+        <span class="yy">YY</span>你說，<br class="br-mobile" />我來聽 <span class="bubble-emoji">💬</span>
+      </h1>
+      <p class="subtitle">PGY 的大小事都可以丟過來！<br />值班累了、教學卡卡、還是只是想抱怨一下，我們都在 🫶</p>
+
+      <ul class="promises">
+        <li>🙈 全程匿名</li>
+        <li>👀 每則都會看</li>
+        <li>🛠️ 認真想辦法</li>
+      </ul>
+    </header>
+
+    <!-- 表單 -->
+    <form class="card" id="feedbackForm" novalidate>
+      <p class="anon-note">🙈 全程匿名，不會記錄你是誰，放心說～</p>
+
+      <div class="step">
+        <h2><span class="num">1</span>我想說說 💭</h2>
+        <label class="field">
+          <span class="sr-only">我想說說</span>
+          <textarea name="say" id="say" rows="7" maxlength="2000" required
+            placeholder="遇到什麼事？哪裡卡卡的？想抱怨、想分享都可以，不用太正式喔～"></textarea>
+          <small class="counter"><span id="countSay">0</span> / 2000</small>
+        </label>
+      </div>
+
+      <div class="step">
+        <h2><span class="num">2</span>我覺得更好的方式 ✨</h2>
+        <label class="field">
+          <span class="sr-only">我覺得更好的方式</span>
+          <textarea name="better" id="better" rows="5" maxlength="2000"
+            placeholder="如果可以改變，你希望怎麼做會更好？（沒想法也沒關係，可以空白）"></textarea>
+          <small class="counter"><span id="countBetter">0</span> / 2000</small>
+        </label>
+      </div>
+
+      <p class="error" id="error" role="alert" hidden></p>
+
+      <button type="submit" class="send" id="sendBtn">
+        <span class="send-text">送出去 🚀</span>
+      </button>
+      <p class="tiny">按下送出後，訊息會匿名傳給 PGY 負責團隊，不會公開喔 🔒</p>
+    </form>
+
+    <!-- 送出成功 -->
+    <section class="card done" id="done" hidden>
+      <div class="done-icon">💌</div>
+      <h2>收到啦！謝謝你願意說 🥹</h2>
+      <p id="doneMsg">我們會好好看、認真想辦法。<br />辛苦了，記得喝水、吃飯、偷偷休息一下！</p>
+      <button type="button" class="send ghost" id="againBtn">再說一件事 ✍️</button>
+    </section>
+
+    <footer class="foot">
+      <p>Made with 💖 for every PGY · 有緊急狀況請直接找導師或主責人員喔</p>
+    </footer>
+  </main>
+
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
